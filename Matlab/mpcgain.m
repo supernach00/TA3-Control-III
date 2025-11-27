@@ -1,0 +1,22 @@
+function [Phi_Phi Phi_F Phi_R Phi F] = mpcgain(A, B, C, Np, Nc)
+[m1, n1] = size(C);
+n= n1 + m1;
+
+h(1,:) = C;
+F(1,:) = C*A;
+
+for kk=2:Np
+    h(kk,:) = h(kk-1,:)*A;
+    F(kk,:) = F(kk-1,:)*A;
+end
+v = h * B;
+Phi = zeros(Np, Nc);
+Phi(:,1) = v;
+for kk=2:Nc
+    Phi(:,kk) = [zeros(kk-1,1); v(1:Np-kk+1, 1)];
+end
+Rs_barra = ones(Np, 1);
+Phi_Phi = Phi' * Phi;
+Phi_F = Phi' * F;
+Phi_R = Phi' * Rs_barra;
+end
