@@ -1,5 +1,47 @@
 #include "funciones_generales.h"
 
+volatile uint16_t estados[6] = {0, 0, 0, 0, 0, 0}; // Array para almacenar los valores leídos del ADC
+
+void leer_adc_multiple(void) {
+
+	// // Esta funcion realiza una lectura del ADC0, ADC1 y ADC2 de forma secuencial y almacena los valores en el array estados.
+	// ADMUX = (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0);
+	// estados[1] = leer_ADC(); // Estado x2
+	// _delay_ms(1); // Delay para no escribir los registros muy rápido
+
+	// ADMUX = (1 << MUX0);
+	// estados[0] = leer_ADC(); // Estado x1
+	// _delay_ms(1);
+	
+	// ADMUX = (1 << MUX1) | (0 << MUX0);
+	// estados[2] = leer_ADC(); // Estado x3
+	// _delay_ms(1);
+
+	// ADMUX = (1 << MUX1) | (1 << MUX0);
+	// estados[3] = leer_ADC(); // Estado x4
+	// _delay_ms(1);
+
+	// ADMUX = (1 << MUX2) | (0 << MUX1) | (0 << MUX0);
+	// estados[4] = leer_ADC(); // Estado x5
+	// _delay_ms(1);
+
+	// ADMUX = (0 << MUX1) | (1 << MUX0);
+	// estados[5] = leer_ADC(); // Salida
+
+	// uint8_t canales[] = {0, 1, 2, 3, 4, 5};
+
+	for(uint8_t i = 0; i < 6; i++) {
+
+        // Limpio los bits MUX y dejo REFS intacto
+        ADMUX = (ADMUX & 0xF0) | (i + 1);
+
+        _delay_us(10);   // Tiempo mínimo recomendado después de cambiar MUX
+
+        estados[i] = leer_ADC();
+    }
+
+};
+
 void setup_ADC(void){
 	
 	// Esta funcion configura el ADC para realizar lecturas en el pin ADC5 con una referencia de 5V y un prescaler de 128.
