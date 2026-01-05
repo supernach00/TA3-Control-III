@@ -30,11 +30,10 @@ ISR(TIMER2_COMPA_vect) // Interrupción cada 1 ms
 
 	}
 
-    if (++contador_referencia >= 5000) 
+    if (++contador_referencia >= 20000) 
     {
         contador_referencia = 0;
 		cambiar_referencia(1000, 4000); // Cambia la referencia entre 1V y 4V cada 10 segundos
-		PORTB ^= (1 << PB0);
 
 	}
 }
@@ -44,7 +43,8 @@ ISR(PCINT2_vect) { // Interrupción cuando se presiona el switch 1 (PD4)
     if (PIND & (1 << PD4)) {
 
 		perturbacion_activada = 1;
-		delta = 1000; 
+		delta = 3500; 
+		PORTB |= (1 << PB0); // Enciende LED indicador
 }
 }
 
@@ -53,30 +53,31 @@ ISR(INT1_vect) // Interrupción cuando se presiona el switch 2 (PD3)
 
 		perturbacion_activada = 0;
 		delta = 0; 
+		PORTB &= ~(1 << PB0); // Apaga LED indicador
 }
 
 ISR(TIMER0_COMPA_vect) // Código que se ejecuta a 61 Hz (cada 16.39 ms)
 {
 
-	contador_PRBS++;
+	// contador_PRBS++;
 
-	if (contador_PRBS >= 4) { 
+	// if (contador_PRBS >= 4) { 
 
-		// Cada 4 interrupciones de Timer0 (osea, cada 65.56 ms), se generan nuevos bits del PRBS.
+	// 	// Cada 4 interrupciones de Timer0 (osea, cada 65.56 ms), se generan nuevos bits del PRBS.
 
-		N++; // N lleva cuenta de la cantidad de bits generados en el test de PRBS. Termina cuando N = 2047.
+	// 	N++; // N lleva cuenta de la cantidad de bits generados en el test de PRBS. Termina cuando N = 2047.
 
-		if (N == 2047) {
+	// 	if (N == 2047) {
 
-			terminar_test_PRBS();
+	// 		terminar_test_PRBS();
 
-		} else {
+	// 	} else {
 		
-			contador_PRBS = 0;
-			actualizar_PWM_PRBS();
+	// 		contador_PRBS = 0;
+	// 		actualizar_PWM_PRBS();
 
-		}
-	}
+	// 	}
+	// }
 }
 
 	int main(void)

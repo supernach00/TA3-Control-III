@@ -97,7 +97,7 @@ uint16_t controlador_PID(uint16_t ref1, uint16_t medicion){
 	// División por el factor de escala
 	int64_t u = (acc / escalado); 
 
-	// Saturar la salida a rango válido de tensión en mV (0 .. 5000)
+	// Saturar la salida a rango válido de tensión en mV (0 - 5000)
 	if (u < 0) u = 0;
 	if (u > 5000) u = 5000;
 

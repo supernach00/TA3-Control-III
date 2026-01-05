@@ -4,38 +4,14 @@ volatile uint16_t estados[6] = {0, 0, 0, 0, 0, 0}; // Array para almacenar los v
 
 void leer_adc_multiple(void) {
 
-	// // Esta funcion realiza una lectura del ADC0, ADC1 y ADC2 de forma secuencial y almacena los valores en el array estados.
-	// ADMUX = (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0);
-	// estados[1] = leer_ADC(); // Estado x2
-	// _delay_ms(1); // Delay para no escribir los registros muy rápido
-
-	// ADMUX = (1 << MUX0);
-	// estados[0] = leer_ADC(); // Estado x1
-	// _delay_ms(1);
-	
-	// ADMUX = (1 << MUX1) | (0 << MUX0);
-	// estados[2] = leer_ADC(); // Estado x3
-	// _delay_ms(1);
-
-	// ADMUX = (1 << MUX1) | (1 << MUX0);
-	// estados[3] = leer_ADC(); // Estado x4
-	// _delay_ms(1);
-
-	// ADMUX = (1 << MUX2) | (0 << MUX1) | (0 << MUX0);
-	// estados[4] = leer_ADC(); // Estado x5
-	// _delay_ms(1);
-
-	// ADMUX = (0 << MUX1) | (1 << MUX0);
-	// estados[5] = leer_ADC(); // Salida
-
-	// uint8_t canales[] = {0, 1, 2, 3, 4, 5};
+	// Esta funcion realiza una lectura del ADC0, ADC1 y ADC2, ADC3, ADC4 y ADC5 de forma secuencial y almacena los valores en el array estados.
 
 	for(uint8_t i = 0; i < 6; i++) {
 
-        // Limpio los bits MUX y dejo REFS intacto
+        // Limpio los bits MUX sin tocar REFS
         ADMUX = (ADMUX & 0xF0) | (i + 1);
 
-        _delay_us(10);   // Tiempo mínimo recomendado después de cambiar MUX
+        _delay_us(10);   // Tiempo de espera después de cambiar MUX
 
         estados[i] = leer_ADC();
     }
@@ -44,7 +20,8 @@ void leer_adc_multiple(void) {
 
 void setup_ADC(void){
 	
-	// Esta funcion configura el ADC para realizar lecturas en el pin ADC5 con una referencia de 5V y un prescaler de 128.
+	// Esta funcion configura el ADC para realizar lecturas con una referencia de 5V y un prescaler de 128.
+	// Por default, el ADC seleccionado es el 5.
 	
 	/*
 	TIMER = ADC
@@ -136,6 +113,7 @@ void setup_PWM(void){
 uint16_t leer_ADC(){
 	
 	// Esta funcion realiza una lectura del ADC y devuelve el valor en milivoltios.
+	// La funcion solo lee el adc que se configuro previamente.
 
 	ADCSRA |= (1 << ADSC);
 	
