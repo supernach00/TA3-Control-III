@@ -22,7 +22,7 @@ volatile uint16_t contador_referencia = 0;
 
 ISR(TIMER2_COMPA_vect) // Interrupción cada 1 ms
 {
-    if (++contador_muestreo >= 30) // Muestreo
+    if (++contador_muestreo >= 20) // Muestreo
     {
         contador_muestreo = 0;
 		flag_muestreo = 1;
@@ -34,6 +34,7 @@ ISR(TIMER2_COMPA_vect) // Interrupción cada 1 ms
     {
         contador_referencia = 0;
 		cambiar_referencia(1000, 4000); // Cambia la referencia entre 1V y 4V cada 10 segundos
+		// PORTB ^= (1 << PB0);
 
 	}
 }

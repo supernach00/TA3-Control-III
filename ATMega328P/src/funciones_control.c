@@ -24,14 +24,24 @@ const int32_t escalado = 1000;
 #define B2    -749
 
 // Coeficientes del MPC
-#define kr    1193 
-#define ku    -977
-#define k1    -60
-#define k2    -55
-#define k3    -46
-#define k4    -32
-#define k5    -17
-#define k6    -5
+// #define kr    1193 
+// #define ku    -977
+// #define k1    -60
+// #define k2    -55
+// #define k3    -46
+// #define k4    -32
+// #define k5    -17
+// #define k6    -5
+
+#define kr  229
+#define ku  -192
+#define k1   -11
+#define k2    -10
+#define k3    -8
+#define k4    -5
+#define k5    -3
+#define k6    -1
+
 
 void aplicar_control_MPC(uint16_t ref){
 
